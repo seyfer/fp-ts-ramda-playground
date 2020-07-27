@@ -20,12 +20,12 @@ export function tipPercentInputMsg(tipPercent) {
 function update(msg, model) {
   switch (msg.type) {
     case MSGS.BILL_AMOUNT_INPUT: {
-      const { billAmount } = msg;
-      return { ...model, billAmount };
+      const {billAmount} = msg;
+      return {...model, billAmount};
     }
     case MSGS.TIP_PERCENT_INPUT: {
-      const { tipPercent } = msg;
-      return { ...model, tipPercent };
+      const {tipPercent} = msg;
+      return {...model, tipPercent};
     }
     default:
       return model;

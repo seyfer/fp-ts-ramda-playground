@@ -1,5 +1,3 @@
-const initModel = {
-  
-};
+const initModel = {};
 
 export default initModel;

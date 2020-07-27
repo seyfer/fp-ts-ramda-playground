@@ -1,6 +1,4 @@
-import * as R from 'ramda';
-
-function update (msg, model) {
+function update(msg, model) {
   return model;
 }
 
