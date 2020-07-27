@@ -35,29 +35,31 @@ export function rightUnitChangedMsg(rightUnit) {
   };
 }
 
-const toInt = R.pipe(parseInt, R.defaultTo(0));
+const toNumber = R.pipe(parseFloat, R.defaultTo(0));
 
-function update (msg, model) {
+function update(msg, model) {
   switch (msg.type) {
     case MSGS.LEFT_VALUE_INPUT: {
-      if (msg.leftValue === '')
-        return { ...model, sourceLeft: true, leftValue: '', rightValue: '' };
-      const leftValue = toInt(msg.leftValue);
-      return convert({ ...model, sourceLeft: true, leftValue });
+      if (msg.leftValue === '') {
+        return {...model, sourceLeft: true, leftValue: '', rightValue: ''};
+      }
+      const leftValue = toNumber(msg.leftValue);
+      return convert({...model, sourceLeft: true, leftValue});
     }
     case MSGS.RIGHT_VALUE_INPUT: {
-      if (msg.rightValue === '')
-        return { ...model, sourceLeft: false, leftValue: '', rightValue: '' };
-      const rightValue = toInt(msg.rightValue);
-      return convert({ ...model, sourceLeft: false, rightValue });
+      if (msg.rightValue === '') {
+        return {...model, sourceLeft: false, leftValue: '', rightValue: ''};
+      }
+      const rightValue = toNumber(msg.rightValue);
+      return convert({...model, sourceLeft: false, rightValue});
     }
     case MSGS.LEFT_UNIT_CHANGED: {
-      const { leftUnit } = msg;
-      return convert({ ...model, leftUnit });
+      const {leftUnit} = msg;
+      return convert({...model, leftUnit});
     }
     case MSGS.RIGHT_UNIT_CHANGED: {
-      const { rightUnit } = msg;
-      return convert({ ...model, rightUnit });
+      const {rightUnit} = msg;
+      return convert({...model, rightUnit});
     }
   }
   return model;
@@ -69,29 +71,29 @@ function round(number) {
 }
 
 function convert(model) {
-  const { leftValue, leftUnit, rightValue, rightUnit } = model;
-  
-  const [fromUnit, fromTemp, toUnit ] = 
+  const {leftValue, leftUnit, rightValue, rightUnit} = model;
+
+  const [fromUnit, fromTemp, toUnit] =
     model.sourceLeft
     ? [leftUnit, leftValue, rightUnit]
     : [rightUnit, rightValue, leftUnit];
-    
+
   const otherValue = R.pipe(
-    convertFromToTemp, 
+    convertFromToTemp,
     round,
   )(fromUnit, toUnit, fromTemp);
 
   return model.sourceLeft
-    ? { ...model, rightValue: otherValue }
-    : { ...model, leftValue: otherValue };
+         ? {...model, rightValue: otherValue}
+         : {...model, leftValue: otherValue};
 }
 
 function convertFromToTemp(fromUnit, toUnit, temp) {
   const convertFn = R.pathOr(
-    R.identity, 
-    [fromUnit, toUnit], 
+    R.identity,
+    [fromUnit, toUnit],
     UnitConversions);
-    
+
   return convertFn(temp);
 }
 

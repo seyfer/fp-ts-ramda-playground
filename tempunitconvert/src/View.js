@@ -1,12 +1,7 @@
 import * as R from 'ramda';
 import hh from 'hyperscript-helpers';
-import { h } from 'virtual-dom';
-import {
-  leftValueInputMsg,
-  rightValueInputMsg,
-  leftUnitChangedMsg,
-  rightUnitChangedMsg,
-} from './Update';
+import {h} from 'virtual-dom';
+import {leftUnitChangedMsg, leftValueInputMsg, rightUnitChangedMsg, rightValueInputMsg} from './Update';
 
 const {
   div,
@@ -20,14 +15,14 @@ const {
 const UNITS = ['Fahrenheit', 'Celsius', 'Kelvin'];
 
 function unitOptions(selectedUnit) {
-  return R.map( 
-    unit => option({ value: unit, selected: selectedUnit === unit}, unit),
-    UNITS
-  )
+  return R.map(
+    unit => option({value: unit, selected: selectedUnit === unit}, unit),
+    UNITS,
+  );
 }
 
 function unitSection(dispatch, unit, value, inputMsg, unitMsg) {
-  return div({ className: 'w-50 ma1' }, [
+  return div({className: 'w-50 ma1'}, [
     input({
       type: 'text',
       className: 'db w-100 mv2 pa2 input-reset ba',
@@ -45,9 +40,9 @@ function unitSection(dispatch, unit, value, inputMsg, unitMsg) {
 }
 
 function view(dispatch, model) {
-  return div({ className: 'mw6 center' }, [
-    h1({ className: 'f2 pv2 bb' }, 'Temperature Unit Converter'),
-    div({ className: 'flex' }, [
+  return div({className: 'mw6 center'}, [
+    h1({className: 'f2 pv2 bb'}, 'Temperature Unit Converter'),
+    div({className: 'flex'}, [
       unitSection(
         dispatch,
         model.leftUnit,
