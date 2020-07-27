@@ -8,6 +8,7 @@ function app(initModel, update, view, node) {
   let currentView = view(dispatch, model);
   let rootNode = createElement(currentView);
   node.appendChild(rootNode);
+
   function dispatch(msg) {
     const updates = update(msg, model);
     const isArray = R.type(updates) === 'Array';

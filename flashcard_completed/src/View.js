@@ -3,15 +3,15 @@ import hh from 'hyperscript-helpers';
 import { h } from 'virtual-dom';
 
 import {
-  questionInputMsg,
   answerInputMsg,
-  saveMsg,
-  showAnswerMsg,
-  scoreMsg,
-  newCardMsg,
-  editCardMsg,
   deleteCardMsg,
+  editCardMsg,
+  newCardMsg,
+  questionInputMsg,
+  saveMsg,
+  scoreMsg,
   SCORES,
+  showAnswerMsg,
 } from './Update';
 
 const { div, h1, label, input, pre, a, button, span, textarea, i } = hh(h);
@@ -19,9 +19,10 @@ const { div, h1, label, input, pre, a, button, span, textarea, i } = hh(h);
 function gradeButtons(dispatch, card) {
   const { showAnswer } = card;
   return showAnswer
-    ? div(
-        { className: 'absolute bottom-0 left-0 w-100 ph2' },
-        div({ className: 'mv2 flex justify-between' }, [
+         ? div(
+      { className: 'absolute bottom-0 left-0 w-100 ph2' },
+      div({ className: 'mv2 flex justify-between' },
+        [
           button(
             {
               className: 'f4 ph3 pv2 bg-red bn white br1',
@@ -44,8 +45,8 @@ function gradeButtons(dispatch, card) {
             'Great',
           ),
         ]),
-      )
-    : null;
+    )
+         : null;
 }
 
 function remove(dispatch, card) {
@@ -59,7 +60,7 @@ function question(dispatch, card) {
   return div({ className: '' }, [
     div({ className: 'b f6 mv1 underline ph1' }, 'Question'),
     div(
-      { className: 'pointer  hover-bg-black-10  bg-animate pv2 ph1', onclick: () => dispatch(editCardMsg(card.id)) },
+      { className: 'pointer hover-bg-black-10 bg-animate pv2 ph1', onclick: () => dispatch(editCardMsg(card.id)) },
       card.question,
     ),
   ]);
@@ -79,25 +80,25 @@ function editQuestion(dispatch, card) {
 function answer(dispatch, card) {
   const { showAnswer } = card;
   return showAnswer
-    ? div([
-        div({ className: 'b f6 mv1 ph1 underline' }, 'Answer'),
-        div(
-          {
-            className: 'pointer hover-bg-black-10 bg-animate pv2 ph1',
-            onclick: () => dispatch(editCardMsg(card.id)),
-          },
-          card.answer,
-        ),
-      ])
-    : div(
-        a(
-          {
-            className: 'f6 underline link pointer',
-            onclick: () => dispatch(showAnswerMsg(card.id)),
-          },
-          'Show Answer',
-        ),
-      );
+         ? div([
+      div({ className: 'b f6 mv1 ph1 underline' }, 'Answer'),
+      div(
+        {
+          className: 'pointer hover-bg-black-10 bg-animate pv2 ph1',
+          onclick: () => dispatch(editCardMsg(card.id)),
+        },
+        card.answer,
+      ),
+    ])
+         : div(
+      a(
+        {
+          className: 'f6 underline link pointer',
+          onclick: () => dispatch(showAnswerMsg(card.id)),
+        },
+        'Show Answer',
+      ),
+    );
 }
 
 function editAnswer(dispatch, card) {
@@ -153,8 +154,8 @@ const card = R.curry((dispatch, card) => {
 
 function view(dispatch, model) {
   const cards = R.map(
-    card(dispatch), 
-    model.cards
+    card(dispatch),
+    model.cards,
   );
   return div({ className: 'mw8 center' }, [
     h1({ className: 'f2 pv2 bb' }, ['Flashcard Study']),

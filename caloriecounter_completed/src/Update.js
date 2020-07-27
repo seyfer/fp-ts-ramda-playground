@@ -30,7 +30,7 @@ export function caloriesInputMsg(calories) {
   };
 }
 
-export const saveMealMsg = {type: MSGS.SAVE_MEAL};
+export const saveMealMsg = { type: MSGS.SAVE_MEAL };
 
 export function deleteMealMsg(id) {
   return {
@@ -49,43 +49,43 @@ export function editMealMsg(editId) {
 function update(msg, model) {
   switch (msg.type) {
     case MSGS.SHOW_FORM: {
-      const {showForm} = msg;
-      const form = {...model.form, showForm, description: '', calories: 0};
-      return {...model, form};
+      const { showForm } = msg;
+      const form = { ...model.form, showForm, description: '', calories: 0 };
+      return { ...model, form };
     }
     case MSGS.MEAL_INPUT: {
-      const {description} = msg;
-      const form = {...model.form, description};
-      return {...model, form};
+      const { description } = msg;
+      const form = { ...model.form, description };
+      return { ...model, form };
     }
     case MSGS.CALORIES_INPUT: {
       const calories = R.pipe(
         parseInt,
         R.defaultTo(0),
       )(msg.calories);
-      const form = {...model.form, calories};
-      return {...model, form};
+      const form = { ...model.form, calories };
+      return { ...model, form };
     }
     case MSGS.SAVE_MEAL: {
-      const {editId} = model.form;
+      const { editId } = model.form;
       return editId !== null ?
              edit(msg, model) :
              add(msg, model);
     }
     case MSGS.DELETE_MEAL: {
-      const {id} = msg;
+      const { id } = msg;
       const meals = R.filter(
         meal => meal.id !== id
         , model.meals);
-      return {...model, meals};
+      return { ...model, meals };
     }
     case MSGS.EDIT_MEAL: {
-      const {editId} = msg;
+      const { editId } = msg;
       const meal = R.find(
         meal => meal.id === editId,
         model.meals);
 
-      const {description, calories} = meal;
+      const { description, calories } = meal;
       const form = {
         ...model.form,
         editId,
@@ -103,9 +103,9 @@ function update(msg, model) {
 }
 
 function add(msg, model) {
-  const {nextId} = model;
-  const {description, calories} = model.form;
-  const meal = {id: nextId, description, calories};
+  const { nextId } = model;
+  const { description, calories } = model.form;
+  const meal = { id: nextId, description, calories };
   const meals = [...model.meals, meal];
   const form = {
     ...model.form,
@@ -122,10 +122,10 @@ function add(msg, model) {
 }
 
 function edit(msg, model) {
-  const {description, calories, editId} = model.form;
+  const { description, calories, editId } = model.form;
   const meals = R.map(meal => {
     if (meal.id === editId) {
-      return {...meal, description, calories};
+      return { ...meal, description, calories };
     }
     return meal;
   }, model.meals);

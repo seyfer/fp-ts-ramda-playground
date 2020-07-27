@@ -41,25 +41,25 @@ function update(msg, model) {
   switch (msg.type) {
     case MSGS.LEFT_VALUE_INPUT: {
       if (msg.leftValue === '') {
-        return {...model, sourceLeft: true, leftValue: '', rightValue: ''};
+        return { ...model, sourceLeft: true, leftValue: '', rightValue: '' };
       }
       const leftValue = toNumber(msg.leftValue);
-      return convert({...model, sourceLeft: true, leftValue});
+      return convert({ ...model, sourceLeft: true, leftValue });
     }
     case MSGS.RIGHT_VALUE_INPUT: {
       if (msg.rightValue === '') {
-        return {...model, sourceLeft: false, leftValue: '', rightValue: ''};
+        return { ...model, sourceLeft: false, leftValue: '', rightValue: '' };
       }
       const rightValue = toNumber(msg.rightValue);
-      return convert({...model, sourceLeft: false, rightValue});
+      return convert({ ...model, sourceLeft: false, rightValue });
     }
     case MSGS.LEFT_UNIT_CHANGED: {
-      const {leftUnit} = msg;
-      return convert({...model, leftUnit});
+      const { leftUnit } = msg;
+      return convert({ ...model, leftUnit });
     }
     case MSGS.RIGHT_UNIT_CHANGED: {
-      const {rightUnit} = msg;
-      return convert({...model, rightUnit});
+      const { rightUnit } = msg;
+      return convert({ ...model, rightUnit });
     }
   }
   return model;
@@ -71,7 +71,7 @@ function round(number) {
 }
 
 function convert(model) {
-  const {leftValue, leftUnit, rightValue, rightUnit} = model;
+  const { leftValue, leftUnit, rightValue, rightUnit } = model;
 
   const [fromUnit, fromTemp, toUnit] =
     model.sourceLeft
@@ -84,8 +84,8 @@ function convert(model) {
   )(fromUnit, toUnit, fromTemp);
 
   return model.sourceLeft
-         ? {...model, rightValue: otherValue}
-         : {...model, leftValue: otherValue};
+         ? { ...model, rightValue: otherValue }
+         : { ...model, leftValue: otherValue };
 }
 
 function convertFromToTemp(fromUnit, toUnit, temp) {

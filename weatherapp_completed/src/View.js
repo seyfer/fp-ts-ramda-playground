@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import hh from 'hyperscript-helpers';
 import { h } from 'virtual-dom';
 
-import { locationInputMsg, removeLocationMsg, addLocationMsg } from './Update';
+import { addLocationMsg, locationInputMsg, removeLocationMsg } from './Update';
 
 const { div, h1, label, input, pre, form, button, ul, li, span, i } = hh(h);
 

@@ -27,11 +27,11 @@ export function removeLocationMsg(id) {
 function update(msg, model) {
   switch (msg.type) {
     case MSGS.LOCATION_INPUT: {
-      const { location } = msg;
-      return { ...model, location };
+      const {location} = msg;
+      return {...model, location};
     }
     case MSGS.ADD_LOCATION: {
-      const { nextId, location, locations } = model;
+      const {nextId, location, locations} = model;
       const newLocation = {
         id: nextId,
         name: location,
@@ -48,10 +48,10 @@ function update(msg, model) {
       };
     }
     case MSGS.REMOVE_LOCATION: {
-      const { id } = msg;
-      const { locations } = model;
+      const {id} = msg;
+      const {locations} = model;
       const updatedLocations = R.reject(R.propEq('id', id), locations);
-      return { ...model, locations: updatedLocations };
+      return {...model, locations: updatedLocations};
     }
   }
   return model;

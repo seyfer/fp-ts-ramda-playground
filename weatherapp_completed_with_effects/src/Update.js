@@ -68,7 +68,8 @@ function update(msg, model) {
         high: '?',
       };
       const updatedLocations = R.prepend(newLocation, locations);
-      return [{
+      return [
+        {
           ...model,
           location: '',
           locations: updatedLocations,
@@ -78,7 +79,7 @@ function update(msg, model) {
           request: { url: weatherUrl(location) },
           successMsg: httpSuccessMsg(nextId),
           errorMsg: httpErrorMsg,
-        }
+        },
       ];
     }
     case MSGS.REMOVE_LOCATION: {

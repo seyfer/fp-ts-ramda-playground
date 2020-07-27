@@ -1,14 +1,14 @@
 import hh from 'hyperscript-helpers';
-import {diff, h, patch} from 'virtual-dom';
+import { diff, h, patch } from 'virtual-dom';
 import createElement from 'virtual-dom/create-element';
 
-const {div, button} = hh(h);
+const { div, button } = hh(h);
 
 const initModel = 0;
 
 function view(dispatch, model) {
   return div([
-    div({className: 'mv2'}, `Count: ${model}`),
+    div({ className: 'mv2' }, `Count: ${model}`),
     button({
       className: 'pv1 ph2 mr2',
       onclick: () => dispatch(MSGS.ADD),

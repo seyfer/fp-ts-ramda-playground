@@ -2,7 +2,7 @@ import formView from './FormView';
 import tableView from './TableView';
 
 import hh from 'hyperscript-helpers';
-import {h} from 'virtual-dom';
+import { h } from 'virtual-dom';
 
 const {
   div,
@@ -11,8 +11,8 @@ const {
 } = hh(h);
 
 function view(dispatch, model) {
-  return div({className: 'mw6 center'}, [
-    h1({className: 'f2 pv2 bb'}, 'Calorie Counter'),
+  return div({ className: 'mw6 center' }, [
+    h1({ className: 'f2 pv2 bb' }, 'Calorie Counter'),
     formView(dispatch, model),
     tableView(dispatch, model.meals),
     pre(JSON.stringify(model, null, 2)),

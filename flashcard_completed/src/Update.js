@@ -81,7 +81,6 @@ const updateCards = R.curry((updateCard, card) => {
 });
 
 function update(msg, model) {
-  console.log(msg);
   switch (msg.type) {
     case MSGS.QUESTION_INPUT: {
       const { id, question } = msg;
@@ -126,9 +125,9 @@ function update(msg, model) {
       const updatedCards = R.pipe(
         R.map(updateCards({ id, showAnswer: false, rank })),
         R.sortWith([
-          R.ascend(R.prop('rank')), 
-          R.descend(R.prop('id'))]
-        )
+          R.ascend(R.prop('rank')),
+          R.descend(R.prop('id'))],
+        ),
       )(cards);
       return { ...model, cards: updatedCards };
     }
