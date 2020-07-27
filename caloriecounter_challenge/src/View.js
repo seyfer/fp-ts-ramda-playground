@@ -1,22 +1,17 @@
 import hh from 'hyperscript-helpers';
-import { h } from 'virtual-dom';
-import { 
-  showFormMsg,
-  mealInputMsg,
-  caloriesInputMsg,
-  saveMealMsg,
-} from './Update';
+import {h} from 'virtual-dom';
+import {caloriesInputMsg, mealInputMsg, saveMealMsg, showFormMsg} from './Update';
 
-const { pre, div, h1, button, form, label, input } = hh(h);
+const {pre, div, h1, button, form, label, input} = hh(h);
 
 function fieldSet(labelText, inputValue, oninput) {
   return div([
-    label({ className: 'db mb1' }, labelText),
+    label({className: 'db mb1'}, labelText),
     input({
       className: 'pa2 input-reset ba w-100 mb2',
       type: 'text',
       value: inputValue,
-      oninput
+      oninput,
     }),
   ]);
 }
@@ -42,7 +37,7 @@ function buttonSet(dispatch) {
 }
 
 function formView(dispatch, model) {
-  const { description, calories, showForm } = model;
+  const {description, calories, showForm} = model;
   if (showForm) {
     return form(
       {
@@ -54,27 +49,27 @@ function formView(dispatch, model) {
       },
       [
         fieldSet('Meal', description,
-          e => dispatch(mealInputMsg(e.target.value))
+          e => dispatch(mealInputMsg(e.target.value)),
         ),
         fieldSet('Calories', calories || '',
-          e => dispatch(caloriesInputMsg(e.target.value))
+          e => dispatch(caloriesInputMsg(e.target.value)),
         ),
         buttonSet(dispatch),
       ],
     );
   }
-  return button( 
-      { 
-        className: 'f3 pv2 ph3 bg-blue white bn',
-        onclick: () => dispatch(showFormMsg(true)),
-      },
-      'Add Meal',
-    );
+  return button(
+    {
+      className: 'f3 pv2 ph3 bg-blue white bn',
+      onclick: () => dispatch(showFormMsg(true)),
+    },
+    'Add Meal',
+  );
 }
 
 function view(dispatch, model) {
-  return div({ className: 'mw6 center' }, [
-    h1({ className: 'f2 pv2 bb' }, 'Calorie Counter'),
+  return div({className: 'mw6 center'}, [
+    h1({className: 'f2 pv2 bb'}, 'Calorie Counter'),
     formView(dispatch, model),
     pre(JSON.stringify(model, null, 2)),
   ]);
