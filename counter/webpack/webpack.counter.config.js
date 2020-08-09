@@ -1,17 +1,22 @@
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-module.exports = {
-    context: __dirname, // to automatically find tsconfig.json
-    entry: ['./src/index.ts'],
-    devtool: 'inline-source-map',
+const rootDir = path.resolve(__dirname, '../');
+const srcDir = path.resolve(rootDir, 'src');
+
+console.log([rootDir, srcDir]);
+
+const config = {
+    entry: { counter: './src/index.ts' },
     output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].bundle.js',
+        path: path.resolve(rootDir, 'dist/counter'),
     },
+    context: rootDir,
+    devtool: 'inline-source-map',
     watch: true,
     devServer: {
-        contentBase: './src',
+        contentBase: srcDir,
         compress: true,
         port: 9000,
         progress: true,
@@ -22,7 +27,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                include: path.resolve(__dirname, 'src'),
+                include: srcDir,
                 use: 'babel-loader',
             },
             {
@@ -43,3 +48,5 @@ module.exports = {
     },
     plugins: [new ForkTsCheckerWebpackPlugin()],
 };
+
+module.exports = config;
