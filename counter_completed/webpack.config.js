@@ -14,6 +14,8 @@ module.exports = {
         contentBase: './src',
         compress: true,
         port: 9000,
+        progress: true,
+        stats: 'minimal',
     },
     module: {
         rules: [
@@ -21,17 +23,7 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 include: path.resolve(__dirname, 'src'),
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            ['babel-preset-env', {
-                                'onlyRemoveTypeImports': true,
-                            }],
-                        ],
-                        plugins: [require('babel-plugin-transform-object-rest-spread')],
-                    },
-                },
+                use: 'babel-loader',
             },
             {
                 test: /\.tsx?$/,

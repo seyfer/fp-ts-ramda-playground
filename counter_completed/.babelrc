@@ -1,0 +1,41 @@
+{
+    "sourceType": "unambiguous",
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "modules": false,
+                "targets": {},
+                "forceAllTransforms": false,
+                "useBuiltIns": "entry",
+                "corejs": 3
+            },
+            "@babel/preset-typescript"
+        ]
+    ],
+    "plugins": [
+        "@babel/plugin-transform-regenerator",
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-transform-modules-commonjs",
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-transform-destructuring",
+        "@babel/plugin-transform-spread",
+        "@babel/plugin-proposal-class-properties"
+    ],
+    "env": {
+        "test": {
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        "onlyRemoveTypeImports": true,
+                        "targets": {
+                            "node": "current"
+                        }
+                    },
+                    "@babel/typescript"
+                ]
+            ]
+        }
+    }
+}
