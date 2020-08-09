@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "Simple Counter App",
     "scripts": {
-        "start": "webpack-dev-server --open"
+        "start": "webpack-dev-server --open --mode development",
+        "build:dev": "webpack --mode development",
+        "build:prod": "webpack --mode production"
     },
     "author": "Oleg Abrazhaev",
     "license": "MIT",
@@ -18,11 +20,14 @@
         "@babel/plugin-transform-spread": "^7.11.0",
         "@babel/preset-env": "^7.11.0",
         "@babel/preset-typescript": "^7.10.4",
+        "@types/ramda": "^0.27.14",
         "@types/virtual-dom": "^2.1.0",
         "babel-loader": "^8.1.0",
+        "clean-webpack-plugin": "^3.0.0",
         "fork-ts-checker-webpack-plugin": "^5.0.14",
         "hyperscript": "^2.0.2",
         "hyperscript-helpers": "^3.0.3",
+        "ramda": "^0.27.1",
         "ts-loader": "^8.0.2",
         "typescript": "^3.9.7",
         "virtual-dom": "^2.1.1",
