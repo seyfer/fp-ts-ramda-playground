@@ -5,10 +5,15 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const rootDir = path.resolve(__dirname, '../');
 const srcDir = path.resolve(rootDir, 'src');
 
-const configFn = (env, argv) => {
+const configFn = (env, argv, configName) => {
     const isProd = (argv.mode === 'production');
 
     return {
+        entry: { [configName]: srcDir + '/' + configName + '/index.js' },
+        output: {
+            filename: '[name].bundle.js',
+            path: path.resolve(rootDir, 'dist/' + configName),
+        },
         context: rootDir,
         devtool: isProd ? false : 'inline-source-map',
         mode: argv.mode,
