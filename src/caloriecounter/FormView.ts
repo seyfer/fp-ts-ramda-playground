@@ -1,6 +1,8 @@
 import hh from 'hyperscript-helpers';
-import { h } from 'virtual-dom';
-import { caloriesInputMsg, mealInputMsg, saveMealMsg, showFormMsg } from './Update';
+import {h} from 'virtual-dom';
+import {caloriesInputMsg, mealInputMsg, saveMealMsg, showFormMsg} from './Update';
+import {dispatchFn} from "./View";
+import {State} from "./Model";
 
 const {
     div,
@@ -10,9 +12,9 @@ const {
     input,
 } = hh(h);
 
-function fieldSet(labelText, inputValue, oninput) {
+function fieldSet(labelText: string, inputValue: string, oninput: (event: Event) => void) {
     return div([
-        label({ className: 'db mb1' }, labelText),
+        label({className: 'db mb1'}, labelText),
         input({
             className: 'pa2 input-reset ba w-100 mb2',
             type: 'text',
@@ -22,7 +24,7 @@ function fieldSet(labelText, inputValue, oninput) {
     ]);
 }
 
-function buttonSet(dispatch) {
+function buttonSet(dispatch: dispatchFn) {
     return div([
         button(
             {
@@ -42,23 +44,23 @@ function buttonSet(dispatch) {
     ]);
 }
 
-function formView(dispatch, model) {
-    const { description, calories, showForm } = model.form;
+function formView(dispatch: dispatchFn, model: State) {
+    const {description, calories, showForm} = model.form;
     if (showForm) {
         return form(
             {
                 className: 'w-100 mv2',
-                onsubmit: e => {
+                onsubmit: (e: Event) => {
                     e.preventDefault();
                     dispatch(saveMealMsg);
                 },
             },
             [
                 fieldSet('Meal', description,
-                    e => dispatch(mealInputMsg(e.target.value)),
+                    e => dispatch(mealInputMsg((e.target! as HTMLInputElement).value)),
                 ),
-                fieldSet('Calories', calories || '',
-                    e => dispatch(caloriesInputMsg(e.target.value)),
+                fieldSet('Calories', calories.toString() || '',
+                    e => dispatch(caloriesInputMsg(parseInt((e.target! as HTMLInputElement).value))),
                 ),
                 buttonSet(dispatch),
             ],

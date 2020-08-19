@@ -37,28 +37,28 @@ export function rightUnitChangedMsg(rightUnit) {
 
 const toNumber = R.pipe(parseFloat, R.defaultTo(0));
 
-function update(msg, model) {
-    switch (msg.type) {
+function update(message, model) {
+    switch (message.type) {
         case MSGS.LEFT_VALUE_INPUT: {
-            if (msg.leftValue === '') {
+            if (message.leftValue === '') {
                 return { ...model, sourceLeft: true, leftValue: '', rightValue: '' };
             }
-            const leftValue = toNumber(msg.leftValue);
+            const leftValue = toNumber(message.leftValue);
             return convert({ ...model, sourceLeft: true, leftValue });
         }
         case MSGS.RIGHT_VALUE_INPUT: {
-            if (msg.rightValue === '') {
+            if (message.rightValue === '') {
                 return { ...model, sourceLeft: false, leftValue: '', rightValue: '' };
             }
-            const rightValue = toNumber(msg.rightValue);
+            const rightValue = toNumber(message.rightValue);
             return convert({ ...model, sourceLeft: false, rightValue });
         }
         case MSGS.LEFT_UNIT_CHANGED: {
-            const { leftUnit } = msg;
+            const { leftUnit } = message;
             return convert({ ...model, leftUnit });
         }
         case MSGS.RIGHT_UNIT_CHANGED: {
-            const { rightUnit } = msg;
+            const { rightUnit } = message;
             return convert({ ...model, rightUnit });
         }
     }

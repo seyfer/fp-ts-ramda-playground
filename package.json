@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Simple Counter App",
     "scripts": {
-        "start": "webpack-dev-server --open --mode development",
+        "serve": "webpack-dev-server --open --mode development",
         "build:dev": "webpack --mode development",
         "build:prod": "webpack --mode production"
     },

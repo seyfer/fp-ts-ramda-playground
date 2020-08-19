@@ -3,11 +3,15 @@ import {diff, h, patch} from 'virtual-dom';
 import createElement from 'virtual-dom/create-element';
 import VNode = VirtualDOM.VNode;
 
+interface State {
+    counter: 0;
+}
+
 type dispatchFn = (message: string) => void;
-type viewFn = (dispatch: dispatchFn, model: number) => VNode;
-type updateFn = (message: string, model: number) => number;
+type viewFn = (dispatch: dispatchFn, model: State) => VNode;
+type updateFn = (message: string, model: State) => State;
 type appFn = (
-    initModel: number,
+    initModel: State,
     update: updateFn,
     view: viewFn,
     node: HTMLElement
@@ -20,11 +24,11 @@ enum MESSAGES {
 
 const {div, button} = hh(h);
 
-const initModel = 0;
+const initModel: State = {counter: 0};
 
 const view: viewFn = (dispatch, model) => {
     return div([
-        div({className: 'mv2'}, `Count: ${model}`),
+        div({className: 'mv2'}, `Count: ${model.counter}`),
         button({
             className: 'pv1 ph2 mr2',
             onclick: () => dispatch(MESSAGES.ADD),
@@ -39,9 +43,15 @@ const view: viewFn = (dispatch, model) => {
 const update: updateFn = (message, model) => {
     switch (message) {
         case MESSAGES.ADD:
-            return model + 1;
+            return {
+                ...model,
+                counter: model.counter + 1
+            } as State;
         case MESSAGES.SUBTRACT:
-            return model - 1;
+            return {
+                ...model,
+                counter: model.counter - 1
+            } as State;
         default:
             return model;
     }
@@ -50,10 +60,10 @@ const update: updateFn = (message, model) => {
 // impure code below
 
 const app: appFn = (
-    initModel: number,
-    update: updateFn,
-    view: viewFn,
-    node: HTMLElement
+    initModel,
+    update,
+    view,
+    node
 ) => {
     let model = initModel;
     let currentView = view(dispatch, model);

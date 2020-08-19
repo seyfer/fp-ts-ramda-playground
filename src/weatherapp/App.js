@@ -9,8 +9,8 @@ function app(initModel, update, view, node) {
   let rootNode = createElement(currentView);
   node.appendChild(rootNode);
 
-  function dispatch(msg) {
-    const updates = update(msg, model);
+  function dispatch(message) {
+    const updates = update(message, model);
     const isArray = R.type(updates) === 'Array';
     model = isArray ? updates[0] : updates;
     const command = isArray ? updates[1] : null;
