@@ -17,14 +17,14 @@ export function tipPercentInputMsg(tipPercent) {
     };
 }
 
-function update(msg, model) {
-    switch (msg.type) {
+function update(message, model) {
+    switch (message.type) {
         case MSGS.BILL_AMOUNT_INPUT: {
-            const { billAmount } = msg;
+            const { billAmount } = message;
             return { ...model, billAmount };
         }
         case MSGS.TIP_PERCENT_INPUT: {
-            const { tipPercent } = msg;
+            const { tipPercent } = message;
             return { ...model, tipPercent };
         }
         default:

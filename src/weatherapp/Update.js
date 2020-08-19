@@ -52,10 +52,10 @@ export const clearErrorMsg = {
   type: MSGS.CLEAR_ERROR,
 };
 
-function update(msg, model) {
-  switch (msg.type) {
+function update(message, model) {
+  switch (message.type) {
     case MSGS.LOCATION_INPUT: {
-      const { location } = msg;
+      const { location } = message;
       return { ...model, location };
     }
     case MSGS.ADD_LOCATION: {
@@ -83,13 +83,13 @@ function update(msg, model) {
       ];
     }
     case MSGS.REMOVE_LOCATION: {
-      const { id } = msg;
+      const { id } = message;
       const { locations } = model;
       const updatedLocations = R.reject(R.propEq('id', id), locations);
       return { ...model, locations: updatedLocations };
     }
     case MSGS.HTTP_SUCCESS: {
-      const { id, response } = msg;
+      const { id, response } = message;
       const { locations } = model;
       const { temp, temp_min, temp_max } = R.pathOr(
         {},
@@ -113,7 +113,7 @@ function update(msg, model) {
       };
     }
     case MSGS.HTTP_ERROR: {
-      const { error } = msg;
+      const { error } = message;
       return { ...model, error: error.message };
     }
     case MSGS.CLEAR_ERROR: {

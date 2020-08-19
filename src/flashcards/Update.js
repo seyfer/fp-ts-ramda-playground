@@ -80,40 +80,40 @@ const updateCards = R.curry((updateCard, card) => {
     return card;
 });
 
-function update(msg, model) {
-    switch (msg.type) {
+function update(message, model) {
+    switch (message.type) {
         case MSGS.QUESTION_INPUT: {
-            const { id, question } = msg;
+            const { id, question } = message;
             const { cards } = model;
             const updatedCards = R.map(updateCards({ id, question }), cards);
             return { ...model, cards: updatedCards };
         }
         case MSGS.ANSWER_INPUT: {
-            const { id, answer } = msg;
+            const { id, answer } = message;
             const { cards } = model;
             const updatedCards = R.map(updateCards({ id, answer }), cards);
             return { ...model, cards: updatedCards };
         }
         case MSGS.SAVE: {
-            const { id } = msg;
+            const { id } = message;
             const { cards } = model;
             const updatedCards = R.map(updateCards({ id, edit: false }), cards);
             return { ...model, cards: updatedCards };
         }
         case MSGS.SHOW_ANSWER: {
-            const { id } = msg;
+            const { id } = message;
             const { cards } = model;
             const updatedCards = R.map(updateCards({ id, showAnswer: true }), cards);
             return { ...model, cards: updatedCards };
         }
         case MSGS.EDIT_CARD: {
-            const { id } = msg;
+            const { id } = message;
             const { cards } = model;
             const updatedCards = R.map(updateCards({ id, edit: true }), cards);
             return { ...model, cards: updatedCards };
         }
         case MSGS.SCORE: {
-            const { id, score } = msg;
+            const { id, score } = message;
             const { cards } = model;
             const card = R.find(R.propEq('id', id), cards);
 
@@ -145,7 +145,7 @@ function update(msg, model) {
             return { ...model, cards: updatedCards, nextId: id + 1 };
         }
         case MSGS.DELETE_CARD: {
-            const { id } = msg;
+            const { id } = message;
             const { cards } = model;
             const updatedCards = R.reject(R.propEq('id', id), cards);
             return { ...model, cards: updatedCards };
