@@ -2,41 +2,46 @@ import * as R from 'ramda';
 import hh from 'hyperscript-helpers';
 import { h } from 'virtual-dom';
 
-import { billAmountInputMsg, tipPercentInputMsg } from './Update';
+import { billAmountInputMsg, message, tipPercentInputMsg } from './Update';
+import { State } from "./Model";
+import VNode = VirtualDOM.VNode;
 
 const {
     div,
     h1,
     label,
     input,
-    pre,
 } = hh(h);
 
-const round = places =>
+export type dispatchFn = (message: message) => void;
+export type viewFn = (dispatch: dispatchFn, model: State) => VNode;
+
+const round = (places: number) =>
     R.pipe(
-        num => num * Math.pow(10, places),
+        (num: number) => num * Math.pow(10, places),
         Math.round,
-        num => num * Math.pow(10, -1 * places),
+        (num: number) => num * Math.pow(10, -1 * places),
     );
 
 const formatMoney = R.curry(
-    (symbol, places, number) => {
-        return R.pipe(
-            R.defaultTo(0),
+    (symbol: string, places: number, number: number) => {
+        return R.pipe<number, number, number, string, string>(
+            () => number,
+            R.defaultTo<number>(0),
             round(places),
             num => num.toFixed(places),
             R.concat(symbol),
-        )(number);
+        )();
     },
 );
 
-function calcTipAndTotal(billAmount, tipPercent) {
+function calcTipAndTotal(billAmount: string, tipPercent: string) {
     const bill = parseFloat(billAmount);
     const tip = bill * parseFloat(tipPercent) / 100 || 0;
     return [tip, bill + tip];
 }
 
-function inputSet(name, value, oninput) {
+function inputSet(name: string, value: string, oninput: (event: InputEvent) => void) {
     return div({ className: 'w-40' }, [
         label({ className: 'db fw6 lh-copy f5' }, name),
         input({
@@ -48,21 +53,21 @@ function inputSet(name, value, oninput) {
     ]);
 }
 
-function calculatedAmounts(tip, total) {
+function calculatedAmounts(tip: string, total: string) {
     return div({ className: 'w-40 b bt mt2 pt2' }, [
         calculatedAmount('Tip:', tip),
         calculatedAmount('Total:', total),
     ]);
 }
 
-function calculatedAmount(description, amount) {
+function calculatedAmount(description: string, amount: string) {
     return div({ className: 'flex w-100' }, [
         div({ className: 'w-50 pv1 pr2' }, description),
         div({ className: 'w-50 tr pv1 pr2' }, amount),
     ]);
 }
 
-function view(dispatch, model) {
+const view: viewFn = function (dispatch, model) {
     const { billAmount, tipPercent } = model;
 
     const [tip, total] = calcTipAndTotal(billAmount, tipPercent);
@@ -71,11 +76,11 @@ function view(dispatch, model) {
 
     return div({ className: 'mw6 center' }, [
         h1({ className: 'f2 pv2 bb' }, 'Tip Calculator'),
-        inputSet('Bill Amount', billAmount, e =>
-            dispatch(billAmountInputMsg(e.target.value)),
+        inputSet('Bill Amount', billAmount, (e: InputEvent) =>
+            dispatch(billAmountInputMsg((e.target! as HTMLInputElement).value)),
         ),
-        inputSet('Tip %', tipPercent, e =>
-            dispatch(tipPercentInputMsg(e.target.value)),
+        inputSet('Tip %', tipPercent, (e: InputEvent) =>
+            dispatch(tipPercentInputMsg((e.target! as HTMLInputElement).value)),
         ),
         calculatedAmounts(toMoney(tip), toMoney(total)),
     ]);

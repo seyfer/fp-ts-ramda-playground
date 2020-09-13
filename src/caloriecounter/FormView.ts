@@ -12,7 +12,7 @@ const {
     input,
 } = hh(h);
 
-function fieldSet(labelText: string, inputValue: string, oninput: (event: Event) => void) {
+function fieldSet(labelText: string, inputValue: string, oninput: (event: InputEvent) => void) {
     return div([
         label({className: 'db mb1'}, labelText),
         input({
