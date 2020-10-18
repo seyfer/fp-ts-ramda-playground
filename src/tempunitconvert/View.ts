@@ -1,7 +1,16 @@
 import * as R from 'ramda';
 import hh from 'hyperscript-helpers';
-import { h } from 'virtual-dom';
-import { leftUnitChangedMsg, leftValueInputMsg, rightUnitChangedMsg, rightValueInputMsg } from './Update';
+import { h, VNode } from 'virtual-dom';
+import {
+    leftUnitChangedMsg,
+    leftValueInputMsg,
+    message,
+    rightUnitChangedMsg,
+    rightValueInputMsg,
+    unitFn,
+    valueFn
+} from './Update';
+import { State, temperatureUnit } from "./Model";
 
 const {
     div,
@@ -12,34 +21,47 @@ const {
     option,
 } = hh(h);
 
-const UNITS = ['Fahrenheit', 'Celsius', 'Kelvin'];
+const UNITS: temperatureUnit[] = ['Fahrenheit', 'Celsius', 'Kelvin'];
 
-function unitOptions(selectedUnit) {
+export type dispatchFn = (message: message) => void;
+export type viewFn = (dispatch: dispatchFn, model: State) => VNode;
+
+function unitOptions(selectedUnit: temperatureUnit) {
     return R.map(
         unit => option({ value: unit, selected: selectedUnit === unit }, unit),
         UNITS,
     );
 }
 
-function unitSection(dispatch, unit, value, inputMsg, unitMsg) {
+function unitSection(
+    dispatch: dispatchFn,
+    unit: temperatureUnit,
+    value: string,
+    inputMsg: valueFn,
+    unitMsg: unitFn
+) {
     return div({ className: 'w-50 ma1' }, [
         input({
-            type: 'text',
+            type: 'number',
             className: 'db w-100 mv2 pa2 input-reset ba',
             value,
-            oninput: e => dispatch(inputMsg(e.target.value)),
+            oninput: (e: InputEvent) => dispatch(
+                inputMsg((e.target! as HTMLInputElement).value)
+            ),
         }),
         select(
             {
                 className: 'db w-100 pa2 ba input-reset br1 bg-white ba b--black',
-                onchange: e => dispatch(unitMsg(e.target.value)),
+                onchange: (e: InputEvent) => dispatch(
+                    unitMsg(((e.target! as HTMLInputElement).value) as temperatureUnit)
+                ),
             },
             unitOptions(unit),
         ),
     ]);
 }
 
-function view(dispatch, model) {
+function view(dispatch: dispatchFn, model: State) {
     return div({ className: 'mw6 center' }, [
         h1({ className: 'f2 pv2 bb' }, 'Temperature Unit Converter'),
         div({ className: 'flex' }, [
