@@ -1,11 +1,12 @@
 import * as R from 'ramda';
 import hh from 'hyperscript-helpers';
-import { h } from 'virtual-dom';
+import { h, VNode } from 'virtual-dom';
 
 import {
     answerInputMsg,
     deleteCardMsg,
     editCardMsg,
+    message,
     newCardMsg,
     questionInputMsg,
     saveMsg,
@@ -13,13 +14,17 @@ import {
     SCORES,
     showAnswerMsg,
 } from './Update';
+import { Card, State } from "./Model";
 
-const { div, h1, label, input, pre, a, button, span, textarea, i } = hh(h);
+const { div, h1, a, button, textarea, i } = hh(h);
 
-function gradeButtons(dispatch, card) {
+export type dispatchFn = (message: message) => void;
+export type viewFn = (dispatch: dispatchFn, model: State) => VNode;
+
+function gradeButtons(dispatch: dispatchFn, card: Card) {
     const { showAnswer } = card;
     return showAnswer
-           ? div(
+        ? div(
             { className: 'absolute bottom-0 left-0 w-100 ph2' },
             div({ className: 'mv2 flex justify-between' },
                 [
@@ -46,17 +51,22 @@ function gradeButtons(dispatch, card) {
                     ),
                 ]),
         )
-           : null;
+        : null;
 }
 
-function remove(dispatch, card) {
+function remove(dispatch: dispatchFn, card: Card) {
     return i({
         className: 'absolute top-0 right-0 fa fa-remove fa-fw black-50 pointer',
-        onclick: () => dispatch(deleteCardMsg(card.id)),
+        onclick: (e: InputEvent) => {
+            e.stopPropagation();
+            dispatch(deleteCardMsg(card.id))
+        },
     });
 }
 
-function question(dispatch, card) {
+//lol it was Grammarly extension :D:D:D:D:D:D:D
+
+function question(dispatch: dispatchFn, card: Card) {
     return div({ className: '' }, [
         div({ className: 'b f6 mv1 underline ph1' }, 'Question'),
         div(
@@ -69,21 +79,23 @@ function question(dispatch, card) {
     ]);
 }
 
-function editQuestion(dispatch, card) {
+function editQuestion(dispatch: dispatchFn, card: Card) {
     return div({ className: '' }, [
         div({ className: 'b f6 mv1' }, 'Question'),
         textarea({
             className: 'w-100 bg-washed-yellow outline-0 h4',
             value: card.question,
-            oninput: e => dispatch(questionInputMsg(card.id, e.target.value)),
+            oninput: (e: InputEvent) => dispatch(
+                questionInputMsg(card.id, (e.target! as HTMLInputElement).value)
+            ),
         }),
     ]);
 }
 
-function answer(dispatch, card) {
+function answer(dispatch: dispatchFn, card: Card) {
     const { showAnswer } = card;
     return showAnswer
-           ? div([
+        ? div([
             div({ className: 'b f6 mv1 ph1 underline' }, 'Answer'),
             div(
                 {
@@ -93,7 +105,7 @@ function answer(dispatch, card) {
                 card.answer,
             ),
         ])
-           : div(
+        : div(
             a(
                 {
                     className: 'f6 underline link pointer',
@@ -104,18 +116,20 @@ function answer(dispatch, card) {
         );
 }
 
-function editAnswer(dispatch, card) {
+function editAnswer(dispatch: dispatchFn, card: Card) {
     return div({ className: '' }, [
         div({ className: 'b f6 mv1' }, 'Answer'),
         textarea({
             className: 'w-100 bg-washed-yellow outline-0 h4',
             value: card.answer,
-            oninput: e => dispatch(answerInputMsg(card.id, e.target.value)),
+            oninput: (e: InputEvent) => dispatch(
+                answerInputMsg(card.id, (e.target! as HTMLInputElement).value)
+            ),
         }),
     ]);
 }
 
-function viewCard(dispatch, card) {
+function viewCard(dispatch: dispatchFn, card: Card) {
     return div(
         { className: 'w-third pa2' },
         div(
@@ -132,7 +146,7 @@ function viewCard(dispatch, card) {
     );
 }
 
-function editCard(dispatch, card) {
+function editCard(dispatch: dispatchFn, card: Card) {
     return div(
         { className: 'w-third pa2' },
         div({ className: 'w-100 h-100 pa2 bg-light-yellow mv2 shadow-1 relative' }, [
@@ -141,7 +155,10 @@ function editCard(dispatch, card) {
             button(
                 {
                     className: 'f4 ph3 pv2 br1 bg-gray bn white mv2',
-                    onclick: () => dispatch(saveMsg(card.id)),
+                    onclick: (e: InputEvent) => {
+                        e.stopPropagation();
+                        dispatch(saveMsg(card.id));
+                    },
                 },
                 'Save',
             ),
@@ -150,12 +167,12 @@ function editCard(dispatch, card) {
     );
 }
 
-const card = R.curry((dispatch, card) => {
+const card = R.curry((dispatch: dispatchFn, card: Card) => {
     const { edit } = card;
     return edit ? editCard(dispatch, card) : viewCard(dispatch, card);
 });
 
-function view(dispatch, model) {
+function view(dispatch: dispatchFn, model: State) {
     const cards = R.map(
         card(dispatch),
         model.cards,
@@ -172,7 +189,7 @@ function view(dispatch, model) {
             ),
         ),
         div({ className: 'flex flex-wrap nl2 nr2' }, cards),
-        // pre({ className: 'pre truncate'}, JSON.stringify(model, null, 2)),
+        //pre({ className: 'pre truncate'}, JSON.stringify(model, null, 2)),
     ]);
 }
 

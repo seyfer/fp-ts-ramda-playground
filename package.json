@@ -4,6 +4,7 @@
     "description": "Simple Counter App",
     "scripts": {
         "serve": "webpack-dev-server --open --mode development",
+        "debug": "node --inspect node_modules/webpack-dev-server/bin/webpack-dev-server --open --mode development",
         "build:dev": "webpack --mode development",
         "build:prod": "webpack --mode production"
     },

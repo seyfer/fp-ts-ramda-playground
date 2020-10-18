@@ -1,4 +1,18 @@
-const initModel = {
+export interface Card {
+    id: number;
+    question: string;
+    answer: string;
+    rank: number;
+    showAnswer: boolean;
+    edit: boolean;
+}
+
+export interface State {
+    nextId: number;
+    cards: Array<Card>;
+}
+
+const initModel: State = {
     nextId: 3,
     cards: [
         {

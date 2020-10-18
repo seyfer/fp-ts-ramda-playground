@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import { Card, State } from "./Model";
 
 export const MSGS = {
     QUESTION_INPUT: 'QUESTION_INPUT',
@@ -11,7 +12,16 @@ export const MSGS = {
     DELETE_CARD: 'DELETE_CARD',
 };
 
-export function questionInputMsg(id, question) {
+export type message = { type: string, [key: string]: any };
+export type updateFn = (message: message, model: State) => State;
+
+export enum SCORES {
+    BAD,
+    GOOD,
+    GREAT,
+}
+
+export function questionInputMsg(id: number, question: string) {
     return {
         type: MSGS.QUESTION_INPUT,
         id,
@@ -19,7 +29,7 @@ export function questionInputMsg(id, question) {
     };
 }
 
-export function answerInputMsg(id, answer) {
+export function answerInputMsg(id: number, answer: string) {
     return {
         type: MSGS.ANSWER_INPUT,
         id,
@@ -27,21 +37,21 @@ export function answerInputMsg(id, answer) {
     };
 }
 
-export function saveMsg(id) {
+export function saveMsg(id: number) {
     return {
         type: MSGS.SAVE,
         id,
     };
 }
 
-export function showAnswerMsg(id) {
+export function showAnswerMsg(id: number) {
     return {
         type: MSGS.SHOW_ANSWER,
         id,
     };
 }
 
-export function scoreMsg(id, score) {
+export function scoreMsg(id: number, score: SCORES) {
     return {
         type: MSGS.SCORE,
         id,
@@ -49,14 +59,14 @@ export function scoreMsg(id, score) {
     };
 }
 
-export function editCardMsg(id) {
+export function editCardMsg(id: number) {
     return {
         type: MSGS.EDIT_CARD,
         id,
     };
 }
 
-export function deleteCardMsg(id) {
+export function deleteCardMsg(id: number) {
     return {
         type: MSGS.DELETE_CARD,
         id,
@@ -67,73 +77,68 @@ export const newCardMsg = {
     type: MSGS.NEW_CARD,
 };
 
-export const SCORES = {
-    BAD: 0,
-    GOOD: 1,
-    GREAT: 2,
-};
-
-const updateCards = R.curry((updateCard, card) => {
+const updateCards = R.curry((updateCard: Record<string, any>, card: Card) => {
     if (updateCard.id === card.id) {
         return { ...card, ...updateCard };
     }
     return card;
 });
 
-function update(message, model) {
+const update: updateFn = function (message, model) {
     switch (message.type) {
         case MSGS.QUESTION_INPUT: {
             const { id, question } = message;
             const { cards } = model;
-            const updatedCards = R.map(updateCards({ id, question }), cards);
+            const updatedCards = R.map<Card, Card>(updateCards({ id, question }), cards);
             return { ...model, cards: updatedCards };
         }
         case MSGS.ANSWER_INPUT: {
             const { id, answer } = message;
             const { cards } = model;
-            const updatedCards = R.map(updateCards({ id, answer }), cards);
+            const updatedCards = R.map<Card, Card>(updateCards({ id, answer }), cards);
             return { ...model, cards: updatedCards };
         }
         case MSGS.SAVE: {
             const { id } = message;
             const { cards } = model;
-            const updatedCards = R.map(updateCards({ id, edit: false }), cards);
+            const updatedCards = R.map<Card, Card>(updateCards({ id, edit: false }), cards);
             return { ...model, cards: updatedCards };
         }
         case MSGS.SHOW_ANSWER: {
             const { id } = message;
             const { cards } = model;
-            const updatedCards = R.map(updateCards({ id, showAnswer: true }), cards);
+            const updatedCards = R.map<Card, Card>(updateCards({ id, showAnswer: true }), cards);
             return { ...model, cards: updatedCards };
         }
         case MSGS.EDIT_CARD: {
             const { id } = message;
             const { cards } = model;
-            const updatedCards = R.map(updateCards({ id, edit: true }), cards);
+            const updatedCards = R.map<Card, Card>(updateCards({ id, edit: true }), cards);
             return { ...model, cards: updatedCards };
         }
         case MSGS.SCORE: {
             const { id, score } = message;
-            const { cards } = model;
-            const card = R.find(R.propEq('id', id), cards);
+            const { cards }: { cards: Array<Card> } = model;
+            const card = R.find(R.propEq('id', id), cards)!;
 
-            const rank = R.cond([
-                [R.propEq('score', SCORES.BAD), R.always(0)],
+            const rank = R.cond<{ score: SCORES, rank: number }, number>([
+                [R.propEq('score', SCORES.BAD), R.always(SCORES.BAD)],
                 [R.propEq('score', SCORES.GOOD), ({ rank }) => rank + 1],
                 [R.propEq('score', SCORES.GREAT), ({ rank }) => rank + 2],
             ])({ score, rank: card.rank });
-            const updatedCards = R.pipe(
-                R.map(updateCards({ id, showAnswer: false, rank })),
+            const updatedCards = R.pipe<Card[], Card[], Card[]>(
+                R.map<Card, Card>(updateCards({ id, showAnswer: false, rank })),
                 R.sortWith([
-                    R.ascend(R.prop('rank')),
-                    R.descend(R.prop('id'))],
+                        R.ascend(R.prop('rank')),
+                        R.descend(R.prop('id'))
+                    ]
                 ),
-            )(cards);
-            return { ...model, cards: updatedCards };
+            )(cards as Card[]);
+            return { ...model, cards: updatedCards as Card[] };
         }
         case MSGS.NEW_CARD: {
             const { nextId: id, cards } = model;
-            const newCard = {
+            const newCard: Card = {
                 id,
                 question: '',
                 answer: '',

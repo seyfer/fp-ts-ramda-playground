@@ -1,8 +1,14 @@
+const path = require('path');
 const webpackCommonConfig = require('./webpack.common');
 
+const rootDir = path.resolve(__dirname, '../');
+const srcDir = path.resolve(rootDir, 'src');
+
+const configName = 'flashcards';
 const configFn = (env, argv) => {
     return {
-        ...webpackCommonConfig(env, argv, 'flashcards'),
+        ...webpackCommonConfig(env, argv, configName),
+        entry: { [configName]: srcDir + '/' + configName + '/index.ts' },
     };
 }
 
