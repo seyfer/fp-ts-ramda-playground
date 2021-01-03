@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import { State, temperatureUnit } from "./Model";
+import { message } from "../types";
 
 export const MSGS = {
     LEFT_VALUE_INPUT: 'LEFT_VALUE_INPUT',
@@ -8,7 +9,6 @@ export const MSGS = {
     RIGHT_UNIT_CHANGED: 'RIGHT_UNIT_CHANGED',
 };
 
-export type message = { type: string, [key: string]: any };
 export type updateFn = (message: message, model: State) => State;
 
 export type valueFn = (value: string) => message;

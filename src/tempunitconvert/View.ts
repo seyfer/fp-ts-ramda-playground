@@ -4,13 +4,13 @@ import { h, VNode } from 'virtual-dom';
 import {
     leftUnitChangedMsg,
     leftValueInputMsg,
-    message,
     rightUnitChangedMsg,
     rightValueInputMsg,
     unitFn,
     valueFn
 } from './Update';
 import { State, temperatureUnit } from "./Model";
+import { dispatchFn } from "../types";
 
 const {
     div,
@@ -23,7 +23,6 @@ const {
 
 const UNITS: temperatureUnit[] = ['Fahrenheit', 'Celsius', 'Kelvin'];
 
-export type dispatchFn = (message: message) => void;
 export type viewFn = (dispatch: dispatchFn, model: State) => VNode;
 
 function unitOptions(selectedUnit: temperatureUnit) {

@@ -1,8 +1,8 @@
 import hh from 'hyperscript-helpers';
-import {h} from 'virtual-dom';
-import {caloriesInputMsg, mealInputMsg, saveMealMsg, showFormMsg} from './Update';
-import {dispatchFn} from "./View";
-import {State} from "./Model";
+import { h } from 'virtual-dom';
+import { caloriesInputMsg, mealInputMsg, saveMealMsg, showFormMsg } from './Update';
+import { State } from "./Model";
+import { dispatchFn } from "../types";
 
 const {
     div,
@@ -14,7 +14,7 @@ const {
 
 function fieldSet(labelText: string, inputValue: string, oninput: (event: InputEvent) => void) {
     return div([
-        label({className: 'db mb1'}, labelText),
+        label({ className: 'db mb1' }, labelText),
         input({
             className: 'pa2 input-reset ba w-100 mb2',
             type: 'text',
@@ -45,7 +45,7 @@ function buttonSet(dispatch: dispatchFn) {
 }
 
 function formView(dispatch: dispatchFn, model: State) {
-    const {description, calories, showForm} = model.form;
+    const { description, calories, showForm } = model.form;
     if (showForm) {
         return form(
             {

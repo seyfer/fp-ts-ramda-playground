@@ -1,8 +1,8 @@
 import * as R from 'ramda';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Location, State } from "./Model";
+import { message } from "../types";
 
-export type message = { type: string, [key: string]: any };
 export type updateFn = (message: message, model: State) => unknown;
 
 export interface HttpCommand {

@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import { message } from "../types";
 import { Card, State } from "./Model";
 
 export const MSGS = {
@@ -12,7 +13,6 @@ export const MSGS = {
     DELETE_CARD: 'DELETE_CARD',
 };
 
-export type message = { type: string, [key: string]: any };
 export type updateFn = (message: message, model: State) => State;
 
 export enum SCORES {

@@ -2,12 +2,12 @@ import * as R from 'ramda';
 import hh from 'hyperscript-helpers';
 import { h, VNode } from 'virtual-dom';
 
-import { addLocationMsg, clearErrorMsg, locationInputMsg, message, removeLocationMsg } from './Update';
+import { addLocationMsg, clearErrorMsg, locationInputMsg, removeLocationMsg } from './Update';
 import { Location, State } from "./Model";
+import { dispatchFn } from "../types";
 
 const { div, h1, label, input, form, button, ul, li, i } = hh(h);
 
-export type dispatchFn = (message: message) => void;
 export type viewFn = (dispatch: dispatchFn, model: State) => VNode;
 
 function locationForm(dispatch: dispatchFn, model: State) {

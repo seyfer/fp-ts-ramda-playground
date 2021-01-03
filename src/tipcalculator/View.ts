@@ -2,8 +2,9 @@ import * as R from 'ramda';
 import hh from 'hyperscript-helpers';
 import { h } from 'virtual-dom';
 
-import { billAmountInputMsg, message, tipPercentInputMsg } from './Update';
+import { billAmountInputMsg, tipPercentInputMsg } from './Update';
 import { State } from "./Model";
+import { dispatchFn } from "../types";
 import VNode = VirtualDOM.VNode;
 
 const {
@@ -13,7 +14,6 @@ const {
     input,
 } = hh(h);
 
-export type dispatchFn = (message: message) => void;
 export type viewFn = (dispatch: dispatchFn, model: State) => VNode;
 
 const round = (places: number) =>

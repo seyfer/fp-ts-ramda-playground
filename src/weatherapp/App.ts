@@ -3,8 +3,9 @@ import createElement from 'virtual-dom/create-element';
 import axios from 'axios';
 import * as R from 'ramda';
 import { State } from "./Model";
-import { HttpCommand, message, updateFn } from "./Update";
-import { dispatchFn, viewFn } from "./View";
+import { HttpCommand, updateFn } from "./Update";
+import { viewFn } from "./View";
+import { dispatchFn, message } from "../types";
 
 type appFn = (
     initModel: State,

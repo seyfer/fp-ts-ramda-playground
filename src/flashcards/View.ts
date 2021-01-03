@@ -6,7 +6,6 @@ import {
     answerInputMsg,
     deleteCardMsg,
     editCardMsg,
-    message,
     newCardMsg,
     questionInputMsg,
     saveMsg,
@@ -15,10 +14,10 @@ import {
     showAnswerMsg,
 } from './Update';
 import { Card, State } from "./Model";
+import { dispatchFn } from "../types";
 
 const { div, h1, a, button, textarea, i } = hh(h);
 
-export type dispatchFn = (message: message) => void;
 export type viewFn = (dispatch: dispatchFn, model: State) => VNode;
 
 function gradeButtons(dispatch: dispatchFn, card: Card) {

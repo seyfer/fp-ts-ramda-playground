@@ -1,8 +1,9 @@
-import {diff, patch} from 'virtual-dom';
+import { diff, patch } from 'virtual-dom';
 import createElement from 'virtual-dom/create-element';
-import {State} from "./Model";
-import {message, updateFn} from "./Update";
-import {viewFn} from "./View";
+import { State } from "./Model";
+import { updateFn } from "./Update";
+import { viewFn } from "./View";
+import { message } from "../types";
 
 type appFn = (
     initModel: State,

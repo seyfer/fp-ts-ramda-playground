@@ -3,7 +3,7 @@ import createElement from 'virtual-dom/create-element';
 import { State } from "./Model";
 import { updateFn } from "./Update";
 import { viewFn } from "./View";
-import { message } from "./Update";
+import { message } from "../types";
 
 type appFn = (
     initModel: State,
