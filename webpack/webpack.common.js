@@ -9,7 +9,7 @@ const configFn = (env, argv, configName) => {
     const isProd = (argv.mode === 'production');
 
     return {
-        entry: { [configName]: srcDir + '/' + configName + '/index.js' },
+        entry: { [configName]: srcDir + '/' + configName + '/index.ts' },
         output: {
             filename: '[name].bundle.js',
             path: path.resolve(rootDir, 'dist/' + configName),

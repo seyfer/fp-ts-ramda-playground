@@ -8,7 +8,6 @@ const configName = 'flashcards';
 const configFn = (env, argv) => {
     return {
         ...webpackCommonConfig(env, argv, configName),
-        entry: { [configName]: srcDir + '/' + configName + '/index.ts' },
     };
 }
 
